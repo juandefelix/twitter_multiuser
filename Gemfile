@@ -22,3 +22,5 @@ gem 'twitter'
 gem 'faker'
 gem 'rspec'
 
+gem 'sidekiq'
+gem 'redis'
