@@ -33,11 +33,17 @@ get '/auth' do
 end
 
 post '/tweet' do
-  client = twitter_client
-  client.access_token = current_user.oauth_token
-  client.access_token_secret = current_user.oauth_secret
-  client.update(params[:text])
+  # client = twitter_client
+  # client.access_token = current_user.oauth_token
+  # client.access_token_secret = current_user.oauth_secret
+  # client.update(params[:text])
+  current_user.tweet(params[:text])
+
   redirect '/success'
+end
+
+get '/status/:job_id' do
+  # return the status of a job to an AJAX call
 end
 
 get '/success' do
