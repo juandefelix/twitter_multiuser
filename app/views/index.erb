@@ -19,8 +19,29 @@
   $(document).ready(function(){
     // console.log("loaded");
 
-    var checking = function(data){
+    var checking = function(res){
+      interval = setInterval(function(){
+            console.log("Timeout/interval");
+            $.ajax({
+              url: "/status/" + res,
+              type: 'GET',
+              success: function(e){
+                if (e === "true"){
+                  console.log("true");
+                  clearInterval(interval);
 
+                  var error = "Twitter Posted!"
+                }
+                else {console.log("false");
+                  var error = "Session Timeout"; };
+
+                $("#response").text(error)
+
+                },
+              error: function(){console.log("ERROR")}
+            }); // end second Ajax
+          }
+          ,2000);//end set interval
     }
 
     $('#sender').click(function(event){
@@ -31,32 +52,11 @@
         type: 'POST',
         data: {text: $('textarea').val()},
         success: function(res){
-          // console.log(data);
-          // inside success
-          setInterval(function(){
-            // console.log("/status/" + res);
-
-            $.ajax({
-              url: "/status/" + res,
-              type: 'GET',
-              success: function(e){
-                if (e === "true"){
-                  console.log("true")
-                }
-                else {console.log("false")}
-                },
-              error: function(){console.log("ERROR")}
-
-
-
-            });
-
-
-          }
-          ,2000);//end set interval
-
+          $('#response').text("Waiting ...");
+          setTimeOut(checking(res), 3000);
         }// end success
       })// end click
     })// end click
   })// end doc
+
 </script>
