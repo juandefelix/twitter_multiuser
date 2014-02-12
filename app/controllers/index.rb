@@ -1,3 +1,5 @@
+require 'pry'
+
 get '/' do
   erb :index
 end
@@ -38,12 +40,11 @@ post '/tweet' do
   # client.access_token_secret = current_user.oauth_secret
   # client.update(params[:text])
   current_user.tweet(params[:text])
-
-  redirect '/success'
 end
 
 get '/status/:job_id' do
-  # return the status of a job to an AJAX call
+  job_is_complete(params[:job_id]).to_json
+  # binding.pry
 end
 
 get '/success' do
