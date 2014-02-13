@@ -22,4 +22,3 @@ class TweetWorker
     # You'll have to re-initialize everything inside here
   end
 end
-
