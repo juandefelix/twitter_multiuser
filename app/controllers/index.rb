@@ -1,3 +1,5 @@
+require 'pry'
+
 get '/' do
   erb :index
 end
@@ -23,7 +25,7 @@ get '/auth' do
   name = @access_token.params[:screen_name]
 
   user = User.find_or_create_by(username: name, oauth_token: oauth_token, oauth_secret: oauth_secret)
-  set_current_user(user)
+  set_current_user(user
 
 
   # # at this point in the code is where you'll need to create your user account and store the access token
@@ -33,11 +35,16 @@ get '/auth' do
 end
 
 post '/tweet' do
-  client = twitter_client
-  client.access_token = current_user.oauth_token
-  client.access_token_secret = current_user.oauth_secret
-  client.update(params[:text])
-  redirect '/success'
+  # client = twitter_client
+  # client.access_token = current_user.oauth_token
+  # client.access_token_secret = current_user.oauth_secret
+  # client.update(params[:text])
+  current_user.tweet(params[:text])
+end
+
+get '/status/:job_id' do
+  job_is_complete(params[:job_id]).to_json
+  # binding.pry
 end
 
 get '/success' do

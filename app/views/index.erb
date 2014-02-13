@@ -4,22 +4,59 @@
     <div>
       <form action='/tweet' method="post">
         <textarea name='text'></textarea>
-        <input type="submit" val='tweet'>
+        <input id='sender' type="submit" val='tweet'>
       </form>
       <button><a href="/sign_out">Sign out</a></button>
+      <h1 id='response'></>
     </div>
   <% else %>
-    <button><a href="/sign_in">Sign In with Twitter</a></button>
+    <button ><a href="/sign_in">Sign In with Twitter</a></button>
   <% end %>
 
 </div>
 
+<script>
+  $(document).ready(function(){
+    // console.log("loaded");
 
-<!--
-<p>
-        <strong>token:</strong> <%#= @access_token.token %><br>
-        <strong>secret:</strong> <%#= @access_token.secret %><br>
-      </p>
-      <p>
-        <button><a href="/sign_out">Sign Out</a></button>
-      </p> -->
+    var checking = function(res){
+      interval = setInterval(function(){
+            console.log("Timeout/interval");
+            $.ajax({
+              url: "/status/" + res,
+              type: 'GET',
+              success: function(e){
+                if (e === "true"){
+                  console.log("true");
+                  clearInterval(interval);
+
+                  var error = "Twitter Posted!"
+                }
+                else {console.log("false");
+                  var error = "Session Timeout"; };
+
+                $("#response").text(error)
+
+                },
+              error: function(){console.log("ERROR")}
+            }); // end second Ajax
+          }
+          ,2000);//end set interval
+    }
+
+    $('#sender').click(function(event){
+      event.preventDefault()
+      console.log("inside click");
+      $.ajax({
+        url: '/tweet',
+        type: 'POST',
+        data: {text: $('textarea').val()},
+        success: function(res){
+          $('#response').text("Waiting ...");
+          setTimeOut(checking(res), 3000);
+        }// end success
+      })// end click
+    })// end click
+  })// end doc
+
+</script>
