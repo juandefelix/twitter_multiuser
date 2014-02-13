@@ -25,7 +25,7 @@ get '/auth' do
   name = @access_token.params[:screen_name]
 
   user = User.find_or_create_by(username: name, oauth_token: oauth_token, oauth_secret: oauth_secret)
-  set_current_user(user)
+  set_current_user(user
 
 
   # # at this point in the code is where you'll need to create your user account and store the access token
